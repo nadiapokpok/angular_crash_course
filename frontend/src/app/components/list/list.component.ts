@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatTableDataSource } from '@angular/material';
 
-import { Issue } from '../../issue.model';
-import { IssueService } from '../../issue.service';
+import { Cat } from '../../cat.model';
+import { CatService } from '../../cat.service';
 
 @Component({
   selector: 'app-list',
@@ -12,38 +12,38 @@ import { IssueService } from '../../issue.service';
 })
 export class ListComponent implements OnInit {
 
-  issues: Issue[];
-  displayedColumns = ['title', 'responsible', 'description',
-  'severity', 'status', 'actions'];
+  issues: Cat[];
+  displayedColumns = ['name', 'age', 'sexe', 'description', 'actions'];
+  cats: Cat[];
 
-  constructor(private issueService: IssueService, private router: Router) { }
+  constructor(private catService: CatService, private router: Router) { }
 
   ngOnInit() {
-    //on s'abonne pour voir ce qu'on a sollicité à l'uri correspondante ds issueservice
-    /*this.issueService.getIssues().subscribe((issues) =>{
-      console.log(issues);
+    //on s'abonne pour voir ce qu'on a sollicité à l'uri correspondante ds catservice
+    /*this.catService.getCats().subscribe((cats) =>{
+      console.log(cats);
     })*/
 
-    this.fetchIssues();
+    this.fetchCats();
   }
 
-  fetchIssues() {
-    this.issueService
-      .getIssues()
-      .subscribe((data: Issue[]) => {
-        this.issues = data;
+  fetchCats() {
+    this.catService
+      .getCats()
+      .subscribe((data: Cat[]) => {
+        this.cats = data;
         console.log('Data requested ...');
-        console.log(this.issues);
+        console.log(this.cats);
       });
   }
 
-  editIssue(id) {
+  editCat(id) {
     this.router.navigate([`/edit/${id}`]);
   }
 
-  deleteIssue(id) {
-    this.issueService.deleteIssue(id).subscribe(() => {
-      this.fetchIssues();
+  deleteCat(id) {
+    this.catService.deleteCat(id).subscribe(() => {
+      this.fetchCats();
     });
   }
 

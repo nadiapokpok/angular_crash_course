@@ -3,7 +3,7 @@ const cors = require ('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
-const Issue = require('./models/issue');
+const Cat = require('./models/cat');
 
 const app = express();
 //app.get('/', (req, res)=>res.send('Hello World'));
@@ -19,52 +19,52 @@ app.use(cors ());
 const database = "crash-course";
 mongoose.connect(`mongodb://${server}/${database}`);*/
 
-mongoose.connect('mongodb://localhost:27017/issues');
+mongoose.connect('mongodb://localhost:27017/cats');
 const connection = mongoose.connection;
-connection.once('open',() => {
-    console.log('Miaou miaou mongo est là');
-})
 
-router.route('/issues').get((req, res) => {
-    Issue.find((err, issues) => {
+    console.log('Miaou miaou mongo est là');
+
+
+router.route('/cats').get((req, res) => {
+    Cat.find((err, cats) => {
         if (err)
         console.log(err);
         else
-        res.json(issues);
+        res.json(cats);
     });
 });
 
-router.route('/issues/:id').get((req, res) => {
-    Issue.findById(req.params.id, (err, issue) => {
+router.route('/cats/:id').get((req, res) => {
+    Cat.findById(req.params.id, (err, cat) => {
         if (err)
         console.log(err)
         else
-        res.json(issue);
+        res.json(cat);
     });
 });
 
-router.route('/issues/add').post ((req, res) => {
-    let issue = new Issue(req.body);
-    issue.save()
-    .then(issue => {
-        res.status(200).json({'issue': 'Added successfully'})
+router.route('/cats/add').post ((req, res) => {
+    let cat = new Cat(req.body);
+    cat.save()
+    .then(cat => {
+        res.status(200).json({'cat': 'Added successfully'})
     })
     .catch(err => {
         res.status(400).send('Failed to create new record');
     })
 })
-router.route('/issues/update/:id').post((req, res) => {
-    Issue.findById(req.params.id, (err, issue) =>{
-        if(!issue){
+router.route('/cats/update/:id').post((req, res) => {
+    Cat.findById(req.params.id, (err, cat) =>{
+        if(!cat){
             return next(new ERROR ('Could not load document'));
         }else{
-            issue.title = req.body.title;
-            issue.responsible = req.body.responsible;
-            issue.description = req.body.description;
-            issue.severity = req.body.severity;
-            issue.status = req.body.status;
+            cat.name = req.body.name;
+            cat.age = req.body.age;
+            cat.sexe = req.body.sexe;
+            cat.description = req.body.description;
+            
 
-            issue.save().then(issue =>{
+            cat.save().then(cat =>{
                 res.json('update done');
             }).catch(err => {
                 res.status(400).send('Update failed');
@@ -73,8 +73,8 @@ router.route('/issues/update/:id').post((req, res) => {
 });
 });
 
-router.route('/issues/delete/:id').get((req, res) => {
-    Issue.findByIdAndRemove({_id: req.params.id}, (err, issue)=> {
+router.route('/cats/delete/:id').get((req, res) => {
+    Cat.findByIdAndRemove({_id: req.params.id}, (err, cat)=> {
         if(err){
             res.json(err);
         }else{
@@ -87,4 +87,4 @@ router.route('/issues/delete/:id').get((req, res) => {
 
 app.use('/', router);
 
-app.listen(4000, ()=> console.log("Allo j'écoute"));
+app.listen(4001, ()=> console.log("Allo j'écoute"));

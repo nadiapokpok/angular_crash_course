@@ -14,14 +14,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ListComponent } from './components/list/list.component';
 import { CreateComponent } from './components/create/create.component';
 import { EditComponent } from './components/edit/edit.component';
+import { ViewComponent } from './components/view/view.component';
 
-import { IssueService } from  './issue.service';
+import { CatService } from  './cat.service';
 import { from } from 'rxjs';
+
 
 const routes : Routes = [
 { path: 'create', component: CreateComponent},
 { path: 'edit/:id', component: EditComponent},
 { path: 'list', component: ListComponent},
+{ path: 'view', component: ViewComponent},
 {path: '', redirectTo: 'list', pathMatch: 'full'}
 ];
 
@@ -30,7 +33,8 @@ const routes : Routes = [
     AppComponent,
     ListComponent,
     CreateComponent,
-    EditComponent
+    EditComponent,
+    ViewComponent
   
   ],
   imports: [
@@ -55,7 +59,7 @@ const routes : Routes = [
     
     
   ],
-  providers: [IssueService],
+  providers: [CatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
